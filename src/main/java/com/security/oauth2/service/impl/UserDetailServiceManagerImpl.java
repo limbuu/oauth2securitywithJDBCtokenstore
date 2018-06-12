@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.security.oauth2.dao.UserDao;
 import com.security.oauth2.domain.User;
-import com.security.oauth2.repository.UserRepository;
 import com.security.oauth2.service.UserService;
 
 @Service(value = "userService")

@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.security.oauth2.dao.UserDao;
 import com.security.oauth2.domain.User;
-import com.security.oauth2.repository.UserRepository;
 
 @RestController
 @RequestMapping("/signup")
 public class SignupController {
 	
 	@Autowired
-	UserRepository userRepository;
+	UserDao userDao;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -29,7 +29,7 @@ public class SignupController {
 		dbUser.setAge(user.getAge());
 		dbUser.setSalary(user.getSalary());
 		
-		return this.userRepository.save(dbUser);
+		return this.userDao.save(dbUser);
 	}
 
 }

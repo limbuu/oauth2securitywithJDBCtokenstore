@@ -46,7 +46,10 @@ public class Oauth2WebSecurity extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
-                .antMatchers("/api-docs/**").permitAll();
+                .antMatchers("/test/ping").permitAll()
+                .anyRequest().authenticated();
+        
+         //       .antMatchers("/api-docs/**").permitAll();
         //.antMatchers("/oauth/token").permitAll()
         //  .antMatchers("/test/ping").permitAll()
     }*/

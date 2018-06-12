@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.security.oauth2.domain.User;
-import com.security.oauth2.repository.UserRepository;
 import com.security.oauth2.service.UserService;
 
 @RestController
