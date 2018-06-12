@@ -1,10 +1,11 @@
 package com.security.oauth2.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.security.oauth2.api.domain.User;
+import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends MongoRepository<User, String>{
+import com.security.oauth2.domain.User;
+
+public interface UserRepository extends CrudRepository<User, Long>{
 	
 	User findByUsername(String username);
 }
