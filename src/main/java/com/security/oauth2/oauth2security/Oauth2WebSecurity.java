@@ -16,9 +16,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +30,8 @@ public class Oauth2WebSecurity extends WebSecurityConfigurerAdapter {
 	@Resource(name = "userService")
 	UserDetailsService userDetailsService;
 	
+	@Autowired
+	 DataSource dataSource;
 	
 	@Override
 	  @Bean
@@ -40,23 +44,10 @@ public class Oauth2WebSecurity extends WebSecurityConfigurerAdapter {
 	    auth.userDetailsService(userDetailsService).passwordEncoder(bycryptPasswordEncoder());
 	  }
 
-	/*@Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .anonymous().disable()
-                .authorizeRequests()
-                .antMatchers("/test/ping").permitAll()
-                .anyRequest().authenticated();
-        
-         //       .antMatchers("/api-docs/**").permitAll();
-        //.antMatchers("/oauth/token").permitAll()
-        //  .antMatchers("/test/ping").permitAll()
-    }*/
 	
 	@Bean
 	public TokenStore tokenStore() {
-		return new InMemoryTokenStore();
+		return new JdbcTokenStore(dataSource);
 	}
 	
 	@Bean
