@@ -1,30 +1,51 @@
 package com.security.oauth2.oauth2security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
-import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter{
-	private static final String CLIENT_ID = "devglan-client";
-	private static final String CLIENT_SECRET = "devglan-secret";
-	private static final String GRANT_TYPE = "password";
-	private static final String AUTHORIZATION_CODE = "authorization_code";
-	private static final String REFRESH_TOKEN = "refresh_token";
-	private static final String IMPLICIT = "implicit";
-	private static final String SCOPE_READ = "read";
-	private static final String SCOPE_WRITE = "write";
-	private static final String TRUST = "trust";
-	private static final int ACCESS_TOKEN_VALIDITY_SECONDS = 1*60*60;
-	private static final int REFRESH_TOKEN_VALIDITY_SECONDS = 6*60*60;
+	
+	@Value("${security.oauth2.client_id}")
+	private  String client_id;
+	
+	@Value("${security.oauth2.client_secret}")
+	private  String client_secret;
+	
+	@Value("${security.oauth2.grant_type}")
+	private  String grant_type;
+	
+	@Value("${security.oauth2.authorization_code}")
+	private String authorization_code;
+	
+	@Value("${security.oauth2.refresh_token}")
+	private  String refresh_token;
+	
+	@Value("${security.oauth2.implicit}")
+	private  String implicit;
+	
+	@Value("${security.oauth2.scope_read}")
+	private  String scope_read;
+	
+	@Value("${security.oauth2.scope_write}")
+	private String scope_write;
+	
+	@Value("${security.oauth2.trust}")
+	private  String trust;
+	
+	@Value("#{new Integer('${security.oauth2.access_token_validity_seconds}')}")
+	private  int access_token_validity_seconds;
+	
+	@Value("#{new Integer('${security.oauth2.refresh_token_validity_seconds}')}")
+	private  int refresh_token_validity_seconds;
 	
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -35,12 +56,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-		.withClient(CLIENT_ID)
-		.secret(CLIENT_SECRET)
-		.authorizedGrantTypes(GRANT_TYPE, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT )
-		.scopes(SCOPE_READ,SCOPE_WRITE,TRUST)
-		.accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
-		.refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS);
+		.withClient(client_id)
+		.secret(client_secret)
+		.authorizedGrantTypes(grant_type,authorization_code, refresh_token, implicit )
+		.scopes(scope_read,scope_write,trust)
+		.accessTokenValiditySeconds(access_token_validity_seconds)
+		.refreshTokenValiditySeconds(refresh_token_validity_seconds);
 		
 	}
 
@@ -48,7 +69,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints.tokenStore(tokenStore).authenticationManager(authenticationManager);
 	}
-
-	
 
 }
